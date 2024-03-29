@@ -46,4 +46,4 @@ This exploit showcases the complexity of supply chain attacks, where vulnerabili
 
 I created this article after reading the email of the user https://github.com/anarazel which can be found here: https://www.openwall.com/lists/oss-security/2024/03/29/4. 
 
-I also created a modified version of the detection script the user https://github.com/vegard has made.  
+I also created a modified version of the detection script the user https://github.com/vegard has made. The script simplifies its SSH delay test to enhance user-friendliness, ensuring it's broadly accessible for vulnerability detection. This approach strikes a balance between thorough security scanning and ease of use for users of all technical levels.
