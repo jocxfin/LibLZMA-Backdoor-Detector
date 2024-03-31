@@ -99,12 +99,19 @@ check_env_conditions() {
 
 # Check for function signature
 check_function_signature() {
-    local path
-    path="$(ldd $(which sshd 2>/dev/null) | grep liblzma | grep -o '/[^ ]*' || echo "")"
-    if [ -z "$path" ]; then
+    local sshd_path
+    sshd_path=$(which sshd 2>/dev/null)
+    if [ -z "$sshd_path" ]; then
+        update_result "function_signature" "liblzma not used by sshd or sshd not found"
+        return
+    fi
+
+    local liblzma_path
+    liblzma_path="$(ldd $sshd_path | grep liblzma | grep -o '/[^ ]*' || echo "")"
+    if [ -z "$liblzma_path" ]; then
         update_result "function_signature" "liblzma not used by sshd or sshd not found"
     else
-        if hexdump -ve '1/1 "%.2x"' "$path" | grep -q f30f1efa554889f54c89ce5389fb81e7000000804883ec28488954241848894c2410; then
+        if hexdump -ve '1/1 "%.2x"' "$liblzma_path" | grep -q f30f1efa554889f54c89ce5389fb81e7000000804883ec28488954241848894c2410; then
             update_result "function_signature" "vulnerable"
         else
             update_result "function_signature" "not vulnerable"
